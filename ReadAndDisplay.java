@@ -3,7 +3,9 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class ReadAndDisplay {
 
@@ -19,8 +21,29 @@ public class ReadAndDisplay {
 		
 		Collections.sort(alWords);
 		
-		System.out.print(alWords);
+		Map<Integer, String> treeMap = new TreeMap<>(getSortedMap(alWords));
 		
+		System.out.print(treeMap);
+		
+	}
+	
+	public static Map<Integer, String> getSortedMap(ArrayList<String> inputArray){
+		
+		Map<Integer, String> treeMap = new TreeMap();
+
+		int count = 0;
+		for(int i = 1; i < inputArray.size(); i++){
+
+			if(inputArray.get(i).equals(inputArray.get(i-1))){
+				count++;
+			}
+			else{
+				treeMap.put(count, inputArray.get(i-1));
+				count = 0;
+			}
+		}
+		
+		return treeMap;
 	}
 	
 	/* A function that takes an ArrayList and crops out all the punctuation.
