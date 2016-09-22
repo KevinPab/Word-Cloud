@@ -2,30 +2,39 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
 /*
- * Contains all the utility functions that deal with ArrayList of strings
+ * This class contains all the utility functions that deal with ArrayLists
  */
 
 public class UtilityFunctions {
 	
-	public Map<String, Integer> getSortedMap(ArrayList<String> inputArray){
+	/* getTreeMap(ArrayList<String>) returns a TreeMap that contains (Key, Value)
+	 * pairs in the form of (word, frequency).
+	 */
+	public TreeMap<String, Integer> getTreeMap(ArrayList<String> inputArray){
 		
-		Map<String, Integer> treeMap = new TreeMap<>();
+		//Create a TreeMap
+		TreeMap<String, Integer> newTreeMap = new TreeMap<>();
 
+		// In our TreeMap, set the (Key, Value) as (Word, Frequency)
+		// For example, ("Lincoln", 7) means "Lincoln" appeared 7 times
 		for(String word: inputArray){
-			treeMap.put(word, Collections.frequency(inputArray, word));
+	
+			// Collections.frequency(ArrayList, target word) returns and int
+			newTreeMap.put(word, Collections.frequency(inputArray, word));
 		}
 		
-		
-		return treeMap;
+		return newTreeMap;
 	}
 	
-	/* A function that takes an ArrayList and crops out all the punctuation.
-	 * It then returns an ArrayList that contains lower case words with no punctuation
+	
+	
+	
+	/* removeNonLetters(ArrayList<String>) takes an ArrayList and crops out all non-letter characters.
+	 * It then returns an ArrayList that contains lower cased words
 	 */
 	public ArrayList<String> removeNonLetters(ArrayList<String> inputArray){
 		
@@ -46,25 +55,25 @@ public class UtilityFunctions {
 				// Removes all punctuation that is attached to each word by substituting with ""
 				word = word.replaceAll("\\W", "");
 			
-				newWordsArray.add(word.toLowerCase());
+				newWordsArray.add(word.toLowerCase()); // Add and make it lower-cased
 			}
 		}
 		return newWordsArray;
 	}
 	
 	
-	/* A function that checks if a text file exist
+	
+	/* loadTexts(String) checks if a text file exist
 	 * If it exists, read every word into an ArrayList and return that ArrayList.
-	 * Else, prompt for a new file name from the user.
 	 */
-	public ArrayList<String> getWordsFromFile(String fileName){
+	public ArrayList<String> loadTexts(String fileName){
 		
 		ArrayList<String> arListWords = new ArrayList<String>(); // Create an ArrayList<String>
 		
 		boolean loop = true; // determines whether the do-while loop will loop again
 		
 		do{ // Beginning of do-while loop
-		// Try to open a file
+			
 		try{
 		
 		Scanner scFile = new Scanner(new File(fileName)); // Attempts to open file
@@ -76,10 +85,9 @@ public class UtilityFunctions {
 		scFile.close(); // Closes the file
 		loop = false;
 		
-		// If the file is not found, prompt for a new file name
+		// If the file is not found, break. This will return arListWords with size = 0
 		} catch(FileNotFoundException e){
-			break;
-		}
+			break;}
 		} while(loop); // End of do-while loop
 		
 		return arListWords;

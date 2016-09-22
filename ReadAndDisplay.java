@@ -1,3 +1,14 @@
+/* CIT 285
+ * Date: 09/21/16
+ * Name: Paprawin Boonyakida
+ * 
+ * Word Cloud: 
+ * 	- Create a javaFX program that asks for a file name and displays
+ * 	alphabetically sorted words (no duplicates) with different fonts; the 
+ * 	fonts increases as the word's frequency increases. 
+ * 	It will also display each word in random colors.
+ */
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -9,12 +20,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -33,8 +42,8 @@ public class ReadAndDisplay extends Application{
 		
 		TextField tfInput = new TextField(); // Text Field to type the file name
 		
-		FlowPane fpPane = new FlowPane(); // Pane to display text results
-		fpPane.setHgap(7);
+		FlowPane fpPane = new FlowPane(); // FlowPane to display results
+		fpPane.setHgap(7); // Space between each word in the final output
 		
 		HBox hbTop = new HBox(); // Stores the Label, Text Field, and Button horizontally
 	
@@ -55,7 +64,7 @@ public class ReadAndDisplay extends Application{
 			UtilityFunctions wordUtil = new UtilityFunctions();
 			
 			// Initialize the ArrayList or words by calling getWordsFromFile(String)
-			ArrayList<String> alWords = wordUtil.getWordsFromFile(fileName);
+			ArrayList<String> alWords = wordUtil.loadTexts(fileName);
 			
 			// Print "Invalid File" in the text field if file is not found
 			if(alWords.size() <= 0){
@@ -68,12 +77,14 @@ public class ReadAndDisplay extends Application{
 			Collections.sort(alWords); // Sort in ascending order
 			
 			// Create a TreeMap with (Key, Value) where Key = Word and Value = frequency
-			Map<String, Integer> treeMap = new TreeMap<>(wordUtil.getSortedMap(alWords));
+			Map<String, Integer> treeMap = new TreeMap<>(wordUtil.getTreeMap(alWords));
 			
 			double maxFrequency = 0; // Max frequency of a word. Will be used to determine max font printed
 			
 			// Determine the max frequency 
 			for(int i: treeMap.values()){
+				
+				// maxFrequency is assigned larger value
 				maxFrequency = (maxFrequency <= i)?i:maxFrequency;
 			}
 
@@ -99,11 +110,11 @@ public class ReadAndDisplay extends Application{
 				
 				text.setFill(Color.color(Math.random(), Math.random(), Math.random())); // Set a random color
 				
-				fpPane.getChildren().add(text);
+				fpPane.getChildren().add(text); // Add each text Node to the FlowPane
 			}
-			
-	
+				
 		});
+		// END OF EventHandler definition
 		
 		Scene scene = new Scene(bdPane, 700, 700);
 		
@@ -111,7 +122,7 @@ public class ReadAndDisplay extends Application{
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-	} // End of start() method
+	}
 	
 	
 	// Main function to launch the application
